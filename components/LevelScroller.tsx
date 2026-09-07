@@ -103,16 +103,10 @@ export function LevelScroller() {
       ease: "power3.inOut",
     }, 0);
     const direction = nextLevel > previousLevel ? -1 : 1;
-    const atEdge = nextLevel === 0 || nextLevel === LEVELS.length - 1;
-    const edgeDirection = nextLevel === 0 ? 1 : -1;
     transitionRef.current
-      .to(surface, { y: direction * 8, duration: 0.72, ease: "power3.out" }, 0)
-      .to(surface, {
-        y: atEdge ? edgeDirection * 16 : 0,
-        duration: atEdge ? 0.12 : 0.18,
-        ease: "power2.out",
-      }, 0.72)
-      .to(surface, { y: 0, duration: atEdge ? 0.36 : 0.18, ease: "power3.out" }, atEdge ? 0.84 : 0.72);
+      .to(surface, { y: direction * 10, duration: 0.62, ease: "power3.out" }, 0)
+      .to(surface, { y: direction * 18, duration: 0.14, ease: "power2.out" }, 0.62)
+      .to(surface, { y: 0, duration: 0.36, ease: "power3.inOut" }, 0.76);
   }, []);
 
   const settleToNearestLevel = useCallback(() => {

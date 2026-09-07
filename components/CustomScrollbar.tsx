@@ -20,13 +20,12 @@ export function CustomScrollbar({ targetRef, onReady, onDragEnd }: CustomScrollb
         visibility: "visible",
         autoHide: "never",
         dragScroll: true,
-        clickScroll: false,
+        clickScroll: "instant",
         pointers: ["mouse", "touch", "pen"],
       },
     });
     const viewport = instance.elements().viewport;
     const scrollbar = instance.elements().scrollbarVertical.scrollbar;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     onReady?.(viewport);
 
@@ -41,12 +40,12 @@ export function CustomScrollbar({ targetRef, onReady, onDragEnd }: CustomScrollb
     };
     const deactivatePicker = () => {
       window.clearTimeout(pickerStopTimer);
-      pickerStopTimer = window.setTimeout(() => scrollbar.classList.remove("picker-is-active"), 360);
+      pickerStopTimer = window.setTimeout(() => scrollbar.classList.remove("picker-is-active"), 520);
     };
 
     const press = (event: PointerEvent) => {
       dragging = event.target instanceof Element && Boolean(event.target.closest(".os-scrollbar-handle"));
-      if (!reduceMotion) activatePicker();
+      activatePicker();
     };
 
     const release = () => {
@@ -60,14 +59,14 @@ export function CustomScrollbar({ targetRef, onReady, onDragEnd }: CustomScrollb
       const delta = viewport.scrollTop - previousScrollTop;
       previousScrollTop = viewport.scrollTop;
       if (delta !== 0) {
-        scrollbar.style.setProperty("--picker-nudge-y", `${Math.sign(delta) * 2}px`);
+        scrollbar.style.setProperty("--picker-nudge-y", `${Math.sign(delta) * 12}px`);
         window.cancelAnimationFrame(pickerNudgeFrame);
         pickerNudgeFrame = window.requestAnimationFrame(() => {
           scrollbar.style.setProperty("--picker-nudge-y", "0px");
         });
-        if (!reduceMotion) activatePicker();
+        activatePicker();
         window.clearTimeout(pickerStopTimer);
-        pickerStopTimer = window.setTimeout(() => scrollbar.classList.remove("picker-is-active"), 360);
+        pickerStopTimer = window.setTimeout(() => scrollbar.classList.remove("picker-is-active"), 520);
       }
     };
     const removeScrollListener = instance.on("scroll", onScroll);
