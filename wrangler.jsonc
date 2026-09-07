@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developers.cloudflare.com/workers/wrangler/configuration/schema.json",
+  "name": "lea-site",
+  "compatibility_date": "2026-09-07",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "single-page-application"
+  }
+}
